@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Week 9: Arrays and Loops</title>
+    <link rel="stylesheet" href="style.css" />
+    <script>
+      // Shelby Cochrane
+      // This Website is about choosing a state for a presentation. One state per student. No student can use the same state and therefore you enter the choosen state and check if it's available. If it is available, it will add that state to the list so that it is not longer available. It is also not case sensistive and this code has improvements from the previous assignment.
+
+      // Setting up an array of states
+      const stateNames = [
+        "Alabama",
+        "Alaska",
+        "Arizona",
+        "Arkansas",
+        "California",
+      ];
+
+      // function to create a list item for a state
+      function createListItem(state) {
+        const item = document.createElement("option");
+        item.value = state;
+        item.text = state;
+        return item;
+      }
+
+      // function to display the list of states
+      function displayList() {
+        const list = document.getElementById("list");
+        list.innerHTML = ""; // clear the existing list
+        stateNames.forEach((state) => {
+          const item = createListItem(state);
+          list.appendChild(item);
+        });
+      }
+
+      // function to check if a state is available
+      function checkIfStateIsAvailable() {
+        const newStateInput = document.getElementById("newStateInput");
+        const newState = newStateInput.value.trim().toLowerCase(); // retrieve the entered state from the input field
+
+        if (!newState || !/^[a-zA-Z]+$/.test(newState)) {
+          alert("Please enter a valid state name.");
+          return;
+          // Ensuring that the entered state is alphabetical
+        }
+
+        if (stateNames.some((state) => state.toLowerCase() === newState)) {
+          alert(
+            "Sorry! This state is taken. Please choose another state. " +
+              newState.toUpperCase() // display the state name in uppercase
+          );
+        } else {
+          alert(
+            "Congratulations! The state is available: " + newState.toUpperCase()
+          ); // display the state name in uppercase
+          stateNames.push(newState);
+          displayList(); // display the updated list on the page
+          newStateInput.value = ""; // clear the input field
+        }
+      }
+    </script>
+  </head>
+  <body>
+    <h1>State Presentation! Choose your State Here</h1>
+    <p>
+      One State per student. Type in a state below to see if the state you want
+      to present is available.
+    </p>
+
+    <!--Form to input a state and check if it's available.-->
+    <form
+      id="stateForm"
+      onsubmit="event.preventDefault(); checkIfStateIsAvailable();"
+    >
+      <label for="newStateInput">Enter a state:</label>
+      <input type="text" id="newStateInput" name="newStateInput" />
+      <button type="submit">Check</button>
+    </form>
+
+    <!--Displays what states are taken when button is clicked on-->
+    <ul id="list"></ul>
+    <button onclick="displayList()">Display List</button>
+
+    <br />
+    <!--Image of the 50 states for reference-->
+    <img src="states.jpg" alt="Image of states" width="600px" />
+  </body>
+</html>
